@@ -16,21 +16,19 @@ class AnimatedDrawerContent extends StatefulWidget {
   final bool enableCornerAnimation;
   final TypeOpen typeOpen;
 
-  const AnimatedDrawerContent(
-      {Key key,
-      this.controller,
-      this.child,
-      this.isDraggable = true,
-      this.slidePercent,
-      this.verticalScalePercent,
-      this.contentCornerRadius,
-      this.withPaddingTop = false,
-      this.withShadow = true,
-      this.enableScaleAnimation = true,
-      this.enableCornerAnimation = true,
-      this.typeOpen = TypeOpen.FROM_LEFT})
-      : assert(controller != null),
-        super(key: key);
+  const AnimatedDrawerContent({Key? key,
+    required this.controller,
+    required this.child,
+    this.isDraggable = true,
+    required this.slidePercent,
+    required this.verticalScalePercent,
+    required this.contentCornerRadius,
+    this.withPaddingTop = false,
+    this.withShadow = true,
+    this.enableScaleAnimation = true,
+    this.enableCornerAnimation = true,
+    this.typeOpen = TypeOpen.FROM_LEFT})
+      :super(key: key);
 
   @override
   _AnimatedDrawerContentState createState() => _AnimatedDrawerContentState();
@@ -92,10 +90,11 @@ class _AnimatedDrawerContentState extends State<AnimatedDrawerContent> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onHorizontalDragStart: _myOnHorizontalDragStart,
-      onHorizontalDragUpdate: (detail) => _myOnHorizontalDragUpdate(
-        detail,
-        constraints,
-      ),
+      onHorizontalDragUpdate: (detail) =>
+          _myOnHorizontalDragUpdate(
+            detail,
+            constraints,
+          ),
       onHorizontalDragEnd: _myOnHorizontalDragEnd,
       onTap: _myOnTap,
       child: widget.child,
@@ -127,17 +126,15 @@ class _AnimatedDrawerContentState extends State<AnimatedDrawerContent> {
     }
   }
 
-  void _myOnHorizontalDragUpdate(
-    DragUpdateDetails detail,
-    BoxConstraints constraints,
-  ) {
+  void _myOnHorizontalDragUpdate(DragUpdateDetails detail,
+      BoxConstraints constraints,) {
     if (!widget.isDraggable) return;
     if (dragging) {
       var globalPosition = detail.globalPosition.dx;
       globalPosition = globalPosition < 0 ? 0 : globalPosition;
       double position = globalPosition / constraints.maxWidth;
       var realPosition =
-          widget.typeOpen == TypeOpen.FROM_LEFT ? position : (1 - position);
+      widget.typeOpen == TypeOpen.FROM_LEFT ? position : (1 - position);
       widget.controller.move(realPosition);
     }
   }
